@@ -1,0 +1,23 @@
+# 构建产物
+backend/target/
+frontend/node_modules/
+frontend/dist/
+
+# 环境与密钥（绝对不要提交真实 API Key）
+.env
+*.env.local
+
+# IDE / 编辑器
+.idea/
+.vscode/
+*.iml
+.trae/
+
+# 日志与临时文件
+*.log
+logs/
+temp/
+
+# 操作系统
+.DS_Store
+Thumbs.db

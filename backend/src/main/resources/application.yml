@@ -1,0 +1,58 @@
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
+
+spring:
+  application:
+    name: zootravel-backend
+  datasource:
+    url: jdbc:mysql://localhost:3306/zootravel?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: ${MYSQL_PASSWORD:123456}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 5s
+
+# DeepSeek（OpenAI 兼容），key 通过环境变量注入，缺失时走本地降级
+langchain4j:
+  open-ai:
+    chat-model:
+      api-key: ${DEEPSEEK_API_KEY:}
+      base-url: https://api.deepseek.com/v1
+      model-name: ${DEEPSEEK_MODEL:deepseek-chat}
+      temperature: 0.7
+    streaming-chat-model:
+      api-key: ${DEEPSEEK_API_KEY:}
+      base-url: https://api.deepseek.com/v1
+      model-name: ${DEEPSEEK_MODEL:deepseek-chat}
+      temperature: 0.7
+  community:
+    redis:
+      host: localhost
+      port: 6379
+      indexName: zoo_kb
+      prefix: "zoo:kb:"
+      dimension: 384
+
+logging:
+  level:
+    com.zootravel: info
+
+zootravel:
+  chat:
+    # DeepSeek key 缺失时降级为 MySQL 数据直拼模板回答，保证无 key 也能演示
+    local-fallback: true
+    history-key-prefix: "zootravel:chat:"
+  rag:
+    chunk-size: 500
+    overlap: 100
+    max-results: 4
+    min-score: 0.6
+    vector-index: zoo_kb
